@@ -3,13 +3,13 @@
   "target": "preview",
   "argv": [
     "/home/noob/.nvm/versions/node/v22.17.1/bin/node",
-    "/home/noob/FoundrCheck/node_modules/.pnpm/vercel@44.7.3_rollup@4.46.2/node_modules/vercel/dist/vc.js",
+    "/home/noob/.cache/pnpm/dlx/1a55a461c93385c0d8912a6dd30189230a29abb56b02a58dd7d2c32e74b07ba5/19888497b71-a6ab9/node_modules/.pnpm/vercel@44.7.3/node_modules/vercel/dist/vc.js",
     "build"
   ],
   "builds": [
     {
       "require": "@vercel/next",
-      "requirePath": "/home/noob/FoundrCheck/node_modules/.pnpm/@vercel+next@4.11.0_rollup@4.46.2/node_modules/@vercel/next/dist/index",
+      "requirePath": "/home/noob/.cache/pnpm/dlx/1a55a461c93385c0d8912a6dd30189230a29abb56b02a58dd7d2c32e74b07ba5/19888497b71-a6ab9/node_modules/.pnpm/@vercel+next@4.11.0/node_modules/@vercel/next/dist/index",
       "apiVersion": 2,
       "src": "package.json",
       "use": "@vercel/next",
@@ -18,5 +18,9 @@
         "framework": "nextjs"
       }
     }
-  ]
+  ],
+  "features": {
+    "speedInsightsVersion": "1.2.0",
+    "webAnalyticsVersion": "1.5.0"
+  }
 }

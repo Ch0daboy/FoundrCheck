@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}";
+self.__REACT_LOADABLE_MANIFEST='{"app/submit/page.tsx -> @marsidev/react-turnstile":{"id":2319,"files":["static/chunks/319.f11f94c031358e4c.js"]}}';
