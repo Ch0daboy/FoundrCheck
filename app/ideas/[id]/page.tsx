@@ -1,8 +1,17 @@
 export const runtime = "edge";
 
-async function getData(id: string) {
+type Idea = {
+  id: string;
+  title: string;
+  score?: number | null;
+  analysis_summary?: string | null;
+  analysis_raw?: string | null;
+  created_at: string;
+};
+
+async function getData(id: string): Promise<Idea> {
   const res = await fetch(`/api/ideas/${id}`, { cache: "no-store" } as any);
-  return res.json();
+  return (await res.json()) as Idea;
 }
 
 export default async function IdeaDetail({ params }: { params: { id: string } }) {

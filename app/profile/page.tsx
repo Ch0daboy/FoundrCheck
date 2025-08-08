@@ -1,9 +1,11 @@
 export const runtime = "edge";
 
-async function getData() {
+type MyIdea = { id: string; title: string; status: string; score?: number | null };
+
+async function getData(): Promise<MyIdea[]> {
   const res = await fetch("/api/me/ideas", { cache: "no-store" } as any);
-  if (!res.ok) return [];
-  return res.json();
+  if (!res.ok) return [] as MyIdea[];
+  return (await res.json()) as MyIdea[];
 }
 
 export default async function ProfilePage() {

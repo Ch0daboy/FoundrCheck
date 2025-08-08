@@ -1,8 +1,10 @@
 export const runtime = "edge";
 
-async function getData() {
+type Row = { id: string; title: string; score: number; analysis_summary: string | null; created_at: string };
+
+async function getData(): Promise<Row[]> {
   const res = await fetch("/api/leaderboard", { cache: "no-store" } as any);
-  return res.json();
+  return (await res.json()) as Row[];
 }
 
 export default async function LeaderboardPage() {

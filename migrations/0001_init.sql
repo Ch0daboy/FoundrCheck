@@ -5,24 +5,25 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   created_at TEXT DEFAULT (datetime('now'))
 );
 
--- Lucia base tables (simplified)
-CREATE TABLE IF NOT EXISTS users (
+-- Lucia base tables (simplified; singular names)
+CREATE TABLE IF NOT EXISTS user (
   id TEXT PRIMARY KEY,
   email TEXT
 );
 
-CREATE TABLE IF NOT EXISTS user_keys (
+-- Lucia v3 sqlite adapter expects 'key' table
+CREATE TABLE IF NOT EXISTS key (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
   hashed_password TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
-CREATE TABLE IF NOT EXISTS sessions (
+CREATE TABLE IF NOT EXISTS session (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
   expires_at INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 -- ideas table

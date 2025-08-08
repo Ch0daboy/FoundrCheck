@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { getAuth, getSessionUserId } from "@/lib/auth";
+import { validateRequest } from "@/lib/lucia";
 import { env as getEnv } from "@/lib/env";
 import { z } from "zod";
 
@@ -36,8 +36,8 @@ async function sha256(text: string) {
 
 export async function POST(req: Request) {
   const env = getEnv();
-  const userId = await getSessionUserId(env, req);
-  if (!userId) return new Response("Unauthorized", { status: 401 });
+  const { user } = await validateRequest(env, req);
+  if (!user) return new Response("Unauthorized", { status: 401 });
 
   const json = await req.json();
   const parsed = BodySchema.safeParse(json);
@@ -62,10 +62,10 @@ export async function POST(req: Request) {
     await env.DB.prepare(
       `INSERT INTO ideas (id, owner_id, title, description, idea_hash, visibility, status, score, analysis_summary, analysis_raw) VALUES (?, ?, ?, ?, ?, 'public', 'scored', ?, ?, ?)`
     )
-      .bind(ideaId, userId, title, description, hash, cached.score, cached.analysis_summary, cached.analysis_raw)
+      .bind(ideaId, user.id, title, description, hash, cached.score, cached.analysis_summary, cached.analysis_raw)
       .run();
 
-    await env.DB.prepare(`INSERT INTO submissions (owner_id) VALUES (?)`).bind(userId).run();
+    await env.DB.prepare(`INSERT INTO submissions (owner_id) VALUES (?)`).bind(user.id).run();
     return new Response(JSON.stringify({ id: ideaId, status: "scored" }), { status: 201 });
   }
 
@@ -73,17 +73,17 @@ export async function POST(req: Request) {
   const limit = Number(env.RATE_LIMIT_DAILY ?? 3);
   const countRes = await env.DB.prepare(
     `SELECT COUNT(*) as cnt FROM submissions WHERE owner_id = ? AND datetime(created_at) >= datetime('now', '-24 hours')`
-  ).bind(userId).all();
+  ).bind(user.id).all();
   const cnt = Number((countRes.results?.[0] as any)?.cnt ?? 0);
   if (cnt >= limit) return new Response("Rate limit exceeded", { status: 429 });
 
   await env.DB.prepare(
     `INSERT INTO ideas (id, owner_id, title, description, idea_hash, visibility, status) VALUES (?, ?, ?, ?, ?, 'public', 'queued')`
   )
-    .bind(ideaId, userId, title, description, hash)
+    .bind(ideaId, user.id, title, description, hash)
     .run();
 
-  await env.DB.prepare(`INSERT INTO submissions (owner_id) VALUES (?)`).bind(userId).run();
+  await env.DB.prepare(`INSERT INTO submissions (owner_id) VALUES (?)`).bind(user.id).run();
 
   const payload = { ideaId, idea_hash: hash, normalizedText: norm };
   await env.IDEA_QUEUE.send(JSON.stringify(payload));

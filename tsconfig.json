@@ -42,6 +42,10 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "playwright.config.ts",
+    "tests",
+    "scripts",
+    "worker-consumer"
   ]
 }
