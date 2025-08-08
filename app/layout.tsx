@@ -17,15 +17,7 @@ export const metadata: Metadata = {
 
 export const runtime = "edge";
 
-// Web Vitals reporting function
-export function reportWebVitals(metric: any) {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(metric);
-  }
-  
-  // You can send metrics to your analytics service here
-  // Example: analytics.track('Web Vital', metric);
-}
+// Web Vitals reporting - handled by @vercel/analytics automatically
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
