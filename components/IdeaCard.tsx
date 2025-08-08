@@ -1,6 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScoreBadge } from "./ScoreBadge";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+// Dynamically import ScoreBadge to reduce initial bundle size
+const ScoreBadge = dynamic(() => import("./ScoreBadge").then(mod => ({ default: mod.ScoreBadge })), {
+  loading: () => <Badge className="bg-gray-100 text-gray-800">...</Badge>,
+  ssr: false
+});
 
 interface IdeaCardProps {
   id: string;
@@ -48,7 +55,11 @@ export function IdeaCard({
             </CardDescription>
           </div>
           <div className="flex flex-col items-end gap-2 ml-4">
-            {score !== undefined && <ScoreBadge score={score} />}
+            {score !== undefined && (
+              <Suspense fallback={<Badge className="bg-gray-100 text-gray-800">...</Badge>}>
+                <ScoreBadge score={score} />
+              </Suspense>
+            )}
             <Badge variant={getStatusColor(status)}>
               {status}
             </Badge>

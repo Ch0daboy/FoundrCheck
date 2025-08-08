@@ -1,7 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
+import { useState, Suspense } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamically import Turnstile to reduce initial bundle size
+const Turnstile = dynamic(() => import("@marsidev/react-turnstile").then(mod => ({ default: mod.Turnstile })), {
+  loading: () => <div className="h-16 bg-gray-100 animate-pulse rounded-md"></div>,
+  ssr: false
+});
 
 export const runtime = "edge";
 
