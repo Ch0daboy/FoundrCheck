@@ -1,0 +1,19 @@
+name = "foundrcheck"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+pages_build_output_dir = "./.vercel/output/static"
+
+[vars]
+PERPLEXITY_MODEL = "sonar-pro"
+APP_TIMEZONE = "America/Los_Angeles"
+RATE_LIMIT_DAILY = "3"
+
+# Bindings will be configured in Cloudflare dashboard or via wrangler env
+# Example (uncomment and fill when available):
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "foundrcheck-db"
+# database_id = "REPLACE_ME"
+
+
