@@ -1,0 +1,18 @@
+{
+  "runtime": "edge",
+  "name": "api/auth/google/callback",
+  "deploymentTarget": "v8-worker",
+  "entrypoint": "index.js",
+  "assets": [],
+  "framework": {
+    "slug": "nextjs",
+    "version": "14.2.31"
+  },
+  "environment": {
+    "__NEXT_BUILD_ID": "On5yFyosbE-6_qM-VU954",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "SbS3fOHBXN7TSuyxEz0X/NUWTKa7s1/ntNdrJX1ngGY=",
+    "__NEXT_PREVIEW_MODE_ID": "009996117f3904bee2e69f12fe5761a0",
+    "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "438b538ed8c9c6265f66909623e7d6bc806585d3ee32777428fe2271c8fd39a3",
+    "__NEXT_PREVIEW_MODE_SIGNING_KEY": "cb3aa8dc144e381fb6922e61a94d285505398f6b224f1dfd72dabdefd41166f0"
+  }
+}

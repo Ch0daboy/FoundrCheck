@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/api/best-of-day":{},"/api/ideas/[id]":{},"/api/auth/[...lucia]":{},"/api/me/ideas":{},"/api/leaderboard":{},"/":{},"/ideas/[id]":{},"/api/ideas":{},"/leaderboard":{},"/profile":{},"/submit":{}}}
+{"version":1,"functions":{"/api/auth/google":{},"/api/auth/[...lucia]":{},"/api/ideas/[id]":{},"/api/auth/google/callback":{},"/api/leaderboard":{},"/api/me/ideas":{},"/ideas/[id]":{},"/leaderboard":{},"/api/best-of-day":{},"/api/ideas":{},"/":{},"/login":{},"/profile":{},"/submit":{}}}
