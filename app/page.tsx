@@ -1,4 +1,6 @@
 export const runtime = "edge";
+import { Suspense } from "react";
+import { BestOfDay, BestOfDaySkeleton } from "@/components/BestOfDay";
 
 export default function HomePage() {
   return (
@@ -9,14 +11,18 @@ export default function HomePage() {
           <a href="/submit" className="underline">Submit</a>
           <a href="/leaderboard" className="underline">Leaderboard</a>
           <a href="/profile" className="underline">Profile</a>
+          <a href="/login" className="underline">Login</a>
         </nav>
       </header>
       <section>
         <h2 className="text-xl font-medium mb-2">Best Idea of the Day</h2>
-        <div className="border rounded p-4">Coming soon</div>
+        <Suspense fallback={<BestOfDaySkeleton />}>
+          {/* Server component fetching from /api/best-of-day */}
+          {/* Suspense fallback provides a clean loading state */}
+          <BestOfDay />
+        </Suspense>
       </section>
     </main>
   );
 }
-
 

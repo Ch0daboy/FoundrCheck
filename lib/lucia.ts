@@ -1,5 +1,6 @@
 import { Lucia, TimeSpan } from "lucia";
 import { D1Adapter } from "@lucia-auth/adapter-sqlite";
+import { Google } from "arctic";
 import type { Bindings } from "@/lib/env";
 import { v4 as uuidv4 } from "uuid";
 
@@ -18,18 +19,32 @@ async function verifyPassword(hashedPassword: string, password: string): Promise
 
 export function createLucia(env: Bindings) {
   const adapter = new D1Adapter(env.DB, { user: "user", session: "session" });
+  const appUrl = env.APP_URL || 'https://foundrcheck.com';
+  const isProduction = appUrl.includes('foundrcheck.com');
+  
   const lucia = new Lucia(adapter, {
     sessionExpiresIn: new TimeSpan(30, "d"),
     sessionCookie: {
       name: "fc_session",
       attributes: {
         sameSite: "lax",
-        secure: true,
+        secure: isProduction,
         path: "/",
+        domain: isProduction ? ".foundrcheck.com" : undefined,
       },
     },
   });
   return lucia;
+}
+
+export function createGoogleOAuth(env: Bindings) {
+  if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
+    throw new Error("Google OAuth credentials not configured");
+  }
+  
+  const redirectUri = `${env.APP_URL || 'https://foundrcheck.com'}/api/auth/google/callback`;
+  
+  return new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET, redirectUri);
 }
 
 export async function validateRequest(env: Bindings, req: Request) {
@@ -85,6 +100,36 @@ export async function logout(env: Bindings, req: Request) {
   if (sessionId) await lucia.invalidateSession(sessionId);
   const blank = lucia.createBlankSessionCookie().serialize();
   return blank;
+}
+
+export async function createOrGetUserFromGoogle(env: Bindings, googleUser: any) {
+  const existingUser = await env.DB.prepare("SELECT id FROM user WHERE email = ?")
+    .bind(googleUser.email)
+    .first<{ id: string }>();
+
+  if (existingUser) {
+    return existingUser.id;
+  }
+
+  // Create new user
+  const userId = uuidv4();
+  await env.DB.prepare("INSERT INTO user (id, email) VALUES (?, ?)")
+    .bind(userId, googleUser.email)
+    .run();
+
+  // Create user profile
+  await env.DB.prepare("INSERT OR IGNORE INTO user_profiles (id, email) VALUES (?, ?)")
+    .bind(userId, googleUser.email)
+    .run();
+
+  return userId;
+}
+
+export async function createSessionForUser(env: Bindings, userId: string) {
+  const lucia = createLucia(env);
+  const session = await lucia.createSession(userId, {});
+  const cookie = lucia.createSessionCookie(session.id).serialize();
+  return { session, cookie };
 }
 
 

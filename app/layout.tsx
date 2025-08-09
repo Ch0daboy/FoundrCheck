@@ -8,10 +8,13 @@ export const metadata: Metadata = {
   description: "Validate your startup ideas with AI and data.",
   keywords: "startup, ideas, validation, AI, analysis",
   authors: [{ name: "FoundrCheck" }],
+  metadataBase: new URL('https://foundrcheck.com'),
   openGraph: {
     title: "FoundrCheck",
     description: "Validate your startup ideas with AI and data.",
-    type: "website"
+    type: "website",
+    url: "https://foundrcheck.com",
+    siteName: "FoundrCheck"
   }
 };
 

@@ -13,12 +13,13 @@
     "lint": "pnpm exec eslint .",
     "lint:fix": "pnpm exec eslint . --fix",
     "test": "pnpm exec vitest run",
+    "test:coverage": "pnpm exec vitest run --coverage",
     "test:watch": "pnpm exec vitest",
     "e2e": "pnpm exec playwright test",
     "analyze": "ANALYZE=true pnpm run build",
     "type-check": "pnpm exec tsc --noEmit",
     "clean": "rm -rf .next .vercel",
-    "ci": "pnpm run lint && pnpm run type-check && pnpm run build"
+    "ci": "pnpm run lint && pnpm run type-check && pnpm run test && pnpm run build"
   },
   "dependencies": {
     "@lucia-auth/adapter-sqlite": "^3.0.0",
@@ -28,6 +29,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "arctic": "^3.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucia": "^3.2.0",

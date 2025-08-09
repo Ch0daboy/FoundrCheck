@@ -9,6 +9,9 @@ export type Bindings = {
   RATE_LIMIT_DAILY?: string | number;
   TURNSTILE_SECRET_KEY?: string;
   NEXT_PUBLIC_TURNSTILE_SITE_KEY?: string;
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  APP_URL?: string;
 };
 
 export function env(): Bindings {

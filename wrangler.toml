@@ -8,6 +8,7 @@ pages_build_output_dir = "./.vercel/output/static"
 PERPLEXITY_MODEL = "sonar-pro"
 APP_TIMEZONE = "America/Los_Angeles"
 RATE_LIMIT_DAILY = "3"
+APP_URL = "https://foundrcheck.com"
 
 # Bindings will be configured in Cloudflare dashboard or via wrangler env
 # Example (uncomment and fill when available):
@@ -15,5 +16,11 @@ RATE_LIMIT_DAILY = "3"
 # binding = "DB"
 # database_name = "foundrcheck-db"
 # database_id = "REPLACE_ME"
+
+# Secrets (set via wrangler secret put command or dashboard):
+# - PERPLEXITY_API_KEY
+# - GOOGLE_CLIENT_ID  
+# - GOOGLE_CLIENT_SECRET
+# - TURNSTILE_SECRET_KEY (optional)
 
 
